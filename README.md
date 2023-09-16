@@ -1,13 +1,13 @@
 # Frontend Distribuidos
 
 ###  Instalacion
-	Ejecute el comando: 
+Ejecute el comando: 
 ```
-npm run install
+npm install
 ```
 ### Ejecucion
 
-    En la raiz del proyecto ejecute el comando:
+En la raiz del proyecto ejecute el comando:
 ```
 npm run dev
 ```
