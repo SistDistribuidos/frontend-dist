@@ -1,0 +1,20 @@
+.screen {
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    word-break: break-all;
+    gap: 5px;
+}
+
+#users {
+    padding: 5px;
+}
+
+#actions {
+    padding: 5px;
+}
