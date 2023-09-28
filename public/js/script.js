@@ -1,8 +1,10 @@
 const numberElement = document.getElementById('number');
 const message = document.getElementById('actions');
 const button = document.getElementById('init');
+const stopButton = document.getElementById('stop');
 let action = false;
-let thread = 0;
+let threads = [];
+
 
 let users;
 fetch('http://127.0.0.1:8000/api/get-users')
@@ -14,15 +16,47 @@ fetch('http://127.0.0.1:8000/api/get-users')
     })
 });
 
+const addFilaTable = (tableName, number) => {
+  const element = document.createElement('tr');
+  const addFila = document.getElementById(tableName);
+  const elementTH =  document.createElement('th');
+  const elementTH2 =  document.createElement('th');
+  elementTH2.id = number;
+  elementTH.innerHTML= number;
+  element.appendChild(elementTH);
+  element.appendChild(elementTH2);
+  addFila.appendChild(element);
+};
+
+
+const stopAllAndTerminate = () => {
+  threads.forEach((value) => {
+    value.terminate();
+  });
+  threads = [];
+}
+
+
+
 button.addEventListener('click',() => {
-    action = !action;
-    loop(users,() => {
-        thread = thread + 1;
-        const user = getRandomUser();
-        payDebt(user.id)
-     });
+  stopAllAndTerminate();
+  document.getElementById('table-element').style.visibility = 'visible';
+  const numberThreads = document.getElementById('number-threads');
+  document.getElementById('addFila').innerHTML= '';
+    for (let index = 1; index <= numberThreads.value; index++) {
+      addFilaTable('addFila', index);
+      threads[index] = new Worker('/localJs/worker.js');
+      threads[index].postMessage(users);
+      threads[index].onmessage = function(event){
+        document.getElementById(index).innerHTML = event.data.contador;
+        console.log(`Hilo ${index}: Nro de transacciones `, event.data);
+      }
+    }
 });
 
+stopButton.addEventListener('click', () => {
+  stopAllAndTerminate();
+});
 
 
 function loop(arr, func) {
@@ -45,13 +79,12 @@ function getRandomUser() {
 
 async function payDebt(user_id) {
     const response = await getDebt(user_id);
-    const debts = response.debts;
-    if (debts.length == 0)
-        return;
-    const amount = Math.random()*100;
-    const pay = await generatePayment(debts[0].id, amount);
+    console.log(response)
+    const debt = response.debt;
+    const amount = Math.random()*(debt.amount-debt.amount_paid + 1);
+    console.log('monto pagado ',amount,'\n deuda ',debt.amount);
+    const pay = await generatePayment(debt.id, amount);
     message.innerHTML = JSON.stringify(pay);
-    console.log(thread);
 }
 
 

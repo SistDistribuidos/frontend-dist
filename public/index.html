@@ -8,11 +8,14 @@
   <link rel="stylesheet" href="./css/styles.css">
 </head>
   <body>
-    <main class="screen">
+    <div class="screen">
       <div class="card">
         <div class="action">
           <button id="init" class="btn btn-primary">
             Iniciar <br> Simulacion
+          </button>
+          <button id="stop" class="btn btn-danger">
+            Detener <br> Simulacion
           </button>
         </div>
         <div class="card_element">
@@ -20,11 +23,27 @@
             Numero de usuarios: <div id="number"> 15 </div>
           </div>
           <div id="actions">
-            
+            <div class="form-element">
+              <label>Numero de hilos</label>
+              <input id="number-threads" value="1" placeholder="Numero de hilos" type="number" class="form-element"/>
+            </div>
           </div>
         </div>
       </div>
-    </main>
+      <div id="table-element" class="card --invisible">
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th>Nro Hilo</th>
+              <th>Nro de transacciones</th>
+            </tr>
+          </thead>
+          <tbody id="addFila">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script src="./js/script.js"></script>
   </body>
