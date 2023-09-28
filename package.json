@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/SistDistribuidos/frontend-dist#readme",
   "dependencies": {
+    "axios": "^1.5.1",
     "bootstrap": "^5.3.2",
     "express": "^4.18.2",
     "nodemon": "^3.0.1"

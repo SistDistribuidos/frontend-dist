@@ -1,6 +1,7 @@
 const numberElement = document.getElementById('number');
 const message = document.getElementById('actions');
 const button = document.getElementById('init');
+const next = document.getElementById('next');
 let action = false;
 let thread = 0;
 
@@ -23,6 +24,9 @@ button.addEventListener('click',() => {
      });
 });
 
+next.addEventListener('click',() => {
+  window.location.href= "simulator/simulator.html";
+});
 
 
 function loop(arr, func) {
