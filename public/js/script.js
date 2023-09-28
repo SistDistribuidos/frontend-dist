@@ -5,7 +5,7 @@ let action = false;
 let thread = 0;
 
 let users;
-fetch('http://127.0.0.1:8000/api/get-users')
+fetch('http://backend-dist.test/api/get-users')
 .then((res) => {
     if (res.ok)
         res.json().then((value) => {
@@ -45,11 +45,14 @@ function getRandomUser() {
 
 async function payDebt(user_id) {
     const response = await getDebt(user_id);
-    const debts = response.debts;
+    const debts = response.debt;
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa', response, response.debt);
     if (debts.length == 0)
         return;
     const amount = Math.random()*100;
-    const pay = await generatePayment(debts[0].id, amount);
+    console.log(debts);
+    const pay = await generatePayment(debts.id, amount);
+    console.log('¡pago', pay);
     message.innerHTML = JSON.stringify(pay);
     console.log(thread);
 }
@@ -57,7 +60,7 @@ async function payDebt(user_id) {
 
 function generatePayment(debt_id, amount) {
    
-    const url = 'http://127.0.0.1:8000/api/pay-debt';
+    const url = 'http://backend-dist.test/api/pay-debt';
   
     
     const data = {
@@ -95,7 +98,7 @@ function generatePayment(debt_id, amount) {
 
 function getDebt(user_id) {
     
-    const url = `http://127.0.0.1:8000/api/get-debt?user_id=${user_id}`;
+    const url = `http://backend-dist.test/api/get-debt?user_id=${user_id}`;
   
     
     return fetch(url)
