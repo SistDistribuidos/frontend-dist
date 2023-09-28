@@ -1,57 +1,40 @@
+// self.onmessage = function (e) {
+//     // Realiza el trabajo en segundo plano
+//     var result = e.data * 2;
+//     self.postMessage(result); // Envía el resultado de vuelta al hilo principal
+//   };
+  self.onmessage = function (users) {
+    // var comando = e.data.comando;
+    // var datos = e.data.datos;
+    var resultado;
 
+    run(users);
 
+    // Envía el resultado de vuelta al hilo principal
+    self.postMessage(resultado);
+};
 
-document.addEventListener('DOMContentLoaded', function() {
-    const startButton = document.getElementById('startButton');
-    const finishButton = document.getElementById('finishButton');
-    const next_thread = document.getElementById('next_thread');
-    let textArea = document.getElementById('textArea');
-    let quantity_users_head = document.getElementById('quantity_users_head');// cabecera para la cantidad de usuarios
-    let users = null;// usuarios
-    let run_status= false;
+function funcion1(valor) {
+    // Realiza la primera función en segundo plano
+    return valor * 2;
+}
 
-    getUsers();
-    
-    startButton.addEventListener('click', function() {
-        run_status = true;
-        // textArea.innerHTML = 'Este es el inicio.';
-        run();
-    });
+function funcion2(valor) {
+    // Realiza la segunda función en segundo plano
+    return valor * 3;
+}
 
-    finishButton.addEventListener('click', function() {
-        run_status = false;
-        // textArea.innerHTML = 'Este es la finalización.';
-    });
-
-    next_thread.addEventListener('click', function() {
-        run_status = false;
-        window.location.href= "multithread_simulator.html";
-    });
-    // obtiene usuarios
-    function getUsers() {
-        axios.get('http://backend-dist.test/api/get-users')
-        .then(response => {
-            console.log('Datos de la respuesta:', response.data.users.length);
-            users =  response.data.users;
-            quantity_users_head.innerHTML = 'Cantidad de usuarios : '+ users.length;
-        })
-        .catch(async error => {
-            console.error('Ocurrió un error al hacer la solicitud:', error);
-            quantity_users_head.innerHTML = 'Cantidad de usuarios : Error al cargar los datos.. Espere unos segundos!!!';
-            await wait_time(5000);
-            getUsers();
-        });
-    }
+  
     // recorre while
-    async function run(){
-        while(run_status){
-            let user_random = get_user_id_random();
-            // console.log(user_id_random, user_id_random.id);
+    async function run(users){
+        // while(run_status){
+            let user_random = get_user_id_random(users.data);
+            console.log('aaaaaaaaaaaaaaaaaad', users.data, user_random);
             let debt = await get_debt(user_random.id).then(async(data)=>{
                 console.log(data, 'xd');
                 const amount = Math.random()*100;
                 let pay = await make_payment(data.id, amount).then((data)=>{
-                    console.log(data);
+                    console.log(data, 'gooood');
                     let user= search_user_for_id(data.debt.user_id);
                     textArea.innerHTML = 'Ejecutando transaccion. => Pago realizado correctamente <br>  Usuario:  ' 
                         + user.name +' '+ user.last_name +'<br> Monto Pagado: ' 
@@ -70,11 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 await wait_time(5000);// en caso de haber errores, espera un tiempo antes de volver a ejecutar
                 // return err;
             });
-        }
+        // }
     }
     
     // get user id randomly
-    function get_user_id_random(){
+    function get_user_id_random(users){
         const index = Math.floor(Math.random() * users.length);
         return users[index];
     }
@@ -127,7 +110,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         return user;
     }
-});
-
-
-
