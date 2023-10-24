@@ -4,16 +4,13 @@ let users = null;
 function loop(arr, func) {
     let x = 0;
     setInterval(() => {
-        func(arr[x]);
-        x = x + 1;
-        x = x % arr.length;
+        func();
     },100)
 }
 
 
 self.onmessage = function(event) {
     users = event.data;
-    console.log("esto es el vector: "+ JSON.stringify(event.data));
     loop(users,() => {
         const user = getRandomUser();
         payDebt(user.id)
@@ -41,7 +38,7 @@ async function payDebt(user_id) {
 
 async function generatePayment(debt_id, amount) {
    
-    const url = 'http://192.168.100.13/api/pay-debt';
+    const url = 'http://127.0.0.1:8000/api/pay-debt';
   
     
     const data = {
@@ -68,7 +65,6 @@ async function generatePayment(debt_id, amount) {
             if(response.status == '422'){
               console.log(`La Deuda Que intenta Pagar Ya Se Encuentra Saldada`);
             }
-          // console.log('Metodo post Error', response.status)
         }
 
         return response.json();
@@ -83,14 +79,13 @@ async function generatePayment(debt_id, amount) {
         return data;
       })
       .catch(error => {
-        console.error('Error en la solicitud POST:', error);
-        generatePayment(debt_id,amount);
+        console.log('No se pudo conectar correctamente');
       });
   }
 
 async function getDebt(user_id) {
     
-    const url = `http://192.168.100.13/api/get-debt?user_id=${user_id}`;
+    const url = `http://127.0.0.1:8000/api/get-debt?user_id=${user_id}`;
   
     
     return fetch(url)
@@ -106,7 +101,6 @@ async function getDebt(user_id) {
         return data;
       })
       .catch(error => {
-        console.log('Error en la solicitud GET:', error);
-        
+        console.log('Esperando obtener los datos del servidor ....');
       });
   }

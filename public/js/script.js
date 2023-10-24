@@ -8,7 +8,7 @@ let threads = [];
 
 let users = [];
 const findUsers = () => {
-  fetch('http://192.168.100.13/api/get-users')
+  fetch('http://127.0.0.1:8000/api/get-users')
   .then((res) => {
       if (res.ok)
           res.json().then((value) => {
