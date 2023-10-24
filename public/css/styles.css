@@ -1,6 +1,8 @@
 .screen {
-    min-height: 100vh;
     padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .card {
@@ -17,4 +19,13 @@
 
 #actions {
     padding: 5px;
+}
+
+.form-element {
+    display: flex;
+    flex-direction: column;
+}
+
+.--invisible {
+    visibility: hidden;
 }
